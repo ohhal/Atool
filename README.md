@@ -1,7 +1,7 @@
 # 基于flask的工具类系统(做的粗糙了)
 
 
-## 个人博客页面展示
+## 页面展示
 
 ### 1. 登录界面
 ![登录界面](https://github.com/z20132224221/bolg/blob/master/showpictures/login.png)

@@ -1,0 +1,128 @@
+<!--sidebar start-->
+<aside style="margin-right: 100px">
+    <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu">
+            <li class="">
+                <a class="" href="{{ url_for('admin.index') }}">
+                    <i class="icon-dashboard"></i>
+                    <span>电脑信息</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-book"></i>
+                    <span>标签管理</span>
+                    <span class="label label-danger pull-right">2</span>
+
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+{#                    <li><a class="" href="{{ url_for('admin.tag_add') }}">增加标签</a></li>#}
+{#                    <li><a class="" href="{{ url_for('admin.tag_list') }}">标签列表</a></li>#}
+
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-cogs"></i>
+                    <span>电影管理</span>
+                    <span class="label label-danger pull-right">2</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+{#                    <li><a class="" href="{{ url_for('admin.movie_add') }}">增加电影</a></li>#}
+{#                    <li><a class="" href="{{ url_for('admin.movie_list') }}">电影列表</a></li>#}
+
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-tasks"></i>
+                    <span>预告管理</span>
+                    <span class="label label-danger pull-right">2</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+{#                    <li><a class="" href="{{ url_for('admin.preview_add') }}">添加预告</a></li>#}
+{#                    <li><a class="" href="{{ url_for('admin.preview_list') }}">预告列表</a></li>#}
+
+                </ul>
+            </li>
+            <li class="">
+                <a class="" href="{{ url_for('admin.user_list') }}">
+                    <i class="icon-dashboard"></i>
+                    <span>会员管理</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="" href="{{ url_for('admin.comment_list') }}">
+                    <i class="icon-dashboard"></i>
+                    <span>评论管理</span>
+                </a>
+            </li>
+            <li class="">
+                <a class="" href="{{ url_for('admin.collect_list') }}">
+                    <i class="icon-dashboard"></i>
+                    <span>收藏管理</span>
+                </a>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-th"></i>
+                    <span>日志管理</span>
+                    <span class="label label-danger pull-right">3</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+                    <li><a class="" href="{{ url_for('admin.logs_operate_log') }}">管理员操作日志</a></li>
+                    <li><a class="" href="{{ url_for('admin.logs_admin_log') }}">管理员登录日志</a></li>
+                    <li><a class="" href="{{ url_for('admin.logs_user_log') }}">会员登录日志</a></li>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-envelope"></i>
+                    <span>权限管理</span>
+                    <span class="label label-danger pull-right">2</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+                    <li><a class="" href="{{ url_for('admin.auth_add') }}">添加权限</a></li>
+                    <li><a class="" href="{{ url_for('admin.auth_list') }}">权限列表</a></li>
+
+                </ul>
+            </li>
+
+
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-glass"></i>
+                    <span>角色管理</span>
+                    <span class="label label-danger pull-right">2</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+                    <li><a class="" href="{{ url_for('admin.role_add') }}">添加角色</a></li>
+                    <li><a class="" href="{{ url_for('admin.role_list') }}">角色列表</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" class="">
+                    <i class="icon-user"></i>
+                    <span>管理员管理</span>
+                    <span class="label label-danger pull-right">2</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub">
+                    <li><a class="" href="{{ url_for('admin.admin_add') }}">添加管理员</a></li>
+                    <li><a class="" href="{{ url_for('admin.admin_list') }}">管理员列表</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+<!--sidebar end-->

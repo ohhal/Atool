@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <script>
+        function success(text) {
+            var textarea = document.getElementById('returntext');
+            var resstauts = document.getElementById('resstauts');
+            var code = text['code'];
+            if (code === 0) {
+                resstauts.innerText = '请求成功！';
+                resstauts.style = "color: blue;"
+                textarea.value = text['msg'];
+            } else {
+                resstauts.innerText = text['msg'];
+                resstauts.style = "color: red;"
+            }
+
+
+        }
+
+        function fail(code) {
+            var resstauts = document.getElementById('resstauts');
+            resstauts.value = '请求过程出错' + code;
+        }
+
+
+        function posturl() {
+            var spiderurl = $("#spiderurl").val(); //url
+            var spidermethod = $("#requestmethod").val(); //请求方法
+            var requestformat = $("#requestformat").val(); //请求字体样式
+
+            var obj = {
+                "url": spiderurl,
+                "method": spidermethod,
+                "requestformat": requestformat,
+                "params": document.getElementById("paramsinput").value,
+                "headers": document.getElementById("headerinput").value,
+                "cookies": document.getElementById("cookieinput").value,
+                "proxy": document.getElementById("proxyinput").value,
+            }
+
+            var request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
+
+            request.onreadystatechange = function () { // 状态发生变化时，函数被回调
+                if (request.readyState === 4) { // 成功完成
+                    // 判断响应结果:
+                    if (request.status === 200) {
+                        // 成功，通过responseText拿到响应的文本:
+                        return success(JSON.parse(request.responseText));
+                    } else {
+                        // 失败，根据响应码判断失败原因:
+                        return fail(request.status);
+                    }
+                } else {
+                    // HTTP请求还在继续...
+                }
+            }
+            // 发送请求:
+            request.open("post", '/api/spider', true);
+            request.send(JSON.stringify(obj));//发送请求
+
+
+
+        }
+
+        function chg_proxy(f, e) {
+            if (document.getElementById(e).style.display == "none") {
+                $(f).css("background-color", "#4cae4c");
+                document.getElementById(e).style.display = "";//显示
+            } else {
+                $(f).css("background-color", "#5bc0de");
+                document.getElementById(e).style.display = "none";//隐藏
+            }
+        }
+
+
+    </script>
+    <style>
+        .content-box {
+            width: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            z-index: 2;
+            border: 1px solid #5cd8ff;
+            margin: 2% auto;
+            border-radius: 15px;
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            background: #e9faff;
+        }
+
+    </style>
+    <div class="content-box">
+        <div class="tool-left-container">
+            <div class="row">
+                <h4>在线接口测试</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <input id="spiderurl" name="spiderurl" placeholder="输入url地址，如：https://www.google.com/"
+                               type="text" value="">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <button type="button" class="btn btn-success" onclick="posturl()">模拟请求</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <select class="requestmethod-select" id="requestmethod"
+                            style="padding: 5px 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="requestformat-select" id="requestformat"
+                            style="padding: 5px 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="UTF-8">UTF-8</option>
+                        <option value="GBK">GBK</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnparams" onclick="chg_proxy(this,'paramsrow')">参数
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnheader" onclick="chg_proxy(this,'headerrow')">
+                        header
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btncookie" onclick="chg_proxy(this,'cookierow')">
+                        cookie
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnproxy" onclick="chg_proxy(this,'proxyrow')">代理设置
+                    </button>
+                </div>
+
+            </div>
+            {#params#}
+            <div class="row" id="paramsrow" style="display:none;">
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <label>参数:</label>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <textarea class="form-control" rows="8" id="paramsinput"
+                                  name="paramsinput" placeholder="输入参数，支持JSON 和 GET 参数格式"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            {#header#}
+            <div class="row" id="headerrow" style="display:none;">
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <label>headers:</label>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <textarea class="form-control" rows="8" id="headerinput"
+                                  name="headerinput" placeholder="添加Header，支持JSON"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            {#cookie#}
+            <div class="row" id="cookierow" style="display:none;">
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <label>cookie:</label>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <input id="cookieinput" name="cookieinput" placeholder="输入cookie"
+                               type="text" value="">
+                    </div>
+                </div>
+
+            </div>
+            {#代理#}
+            <div class="row" id="proxyrow" style="display:none;">
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <label>代理地址:</label>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <input id="proxyinput" name="proxyinput" placeholder="输入代理地址，如：https://127.0.0.1:10808"
+                               type="text" value="">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tool-right-container">
+            <div class="row">
+                <h4 id="resstauts"></h4>
+            </div>
+            <div class="row">
+                <textarea class="form-control" rows="30" style="margin: 30px auto;width: 90%;"
+                          id="returntext"></textarea>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    {{ super() }}
+{% endblock %}

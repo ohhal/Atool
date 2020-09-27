@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <script>
+        function chg() {
+            if (document.getElementById("sel").value == "file") {
+                document.getElementById("form").style.display = "";
+                document.getElementById("form2").style.display = "none";
+            } else {
+                document.getElementById("form").style.display = "none";
+                document.getElementById("form2").style.display = "";
+            }
+        }
+
+        $(function () {
+            // 接收后台传入的值
+            var ocr_type = {{input_ocr_type}}
+                // alert(city_id)
+                // 设置select的值
+                $("#sel").val(ocr_type)
+        })
+
+    </script>
+    <style>
+        .d1 {
+            background: #f0f5f8;
+            width: 1200px;
+            height: 300px;
+            margin: 0px auto;
+            margin-top: 200px;
+        }
+
+        .d1 select {
+            float: left; /*将块元素div设定为左浮动*//*display:inline-block; _display:inline;*/
+            width: 150px;
+            height: 20px;
+        }
+
+        .d1 div {
+            float: left; /*将块元素div设定为左浮动*//*display:inline-block; _display:inline;*/
+            width: 600px;
+            height: 150px;
+        }
+    </style>
+    <!--<h1>演示一/验证码</h1>-->
+    <div class="d1 clearfix">
+
+        <div class="d1-file">
+            <select class="d1-select" id="sel" onChange="chg()">
+                <option value="file">本地中英文验证码识别</option>
+                <option value="imgurl">网络中英文验证码识别</option>
+            </select>
+            <form action="/ocr" enctype='multipart/form-data' method='POST' id="form" style="display:inline">
+                <div class="d1-file">
+                    <input type="file" name="file" style="margin-top:20px;"/>
+                </div>
+                <div class="button">
+                    <button type="submit" class="button-new" style="margin-top:15px;"/>
+                    识别</button>
+                </div>
+            </form>
+            <form action="/ocr_url" method='POST' id="form2" style="display:none">
+                <div class="d1-url">
+                    <input type="text" id="eid" value="" name="eid" placeholder="网络图片地址"
+                           style="margin-top:20px;"/>
+                </div>
+                <div class="button-2">
+                    <button type="submit2" class="button-new2" style="margin-top:15px;"/>
+                    识别</button>
+                </div>
+            </form>
+
+        </div>
+        <div class="d1-result">
+            <p>识别状态：[{{ resultcode }}]{{ resultmsg }}</p>
+            <p>识别结果：{{ result }}</p>
+            <p>识别耗时(s)：{{ run_time }}</p>
+            <img src="{{ url_for('static', filename=src_path, _t=val1) }}" width="{{ img_width }}"
+                 height="{{ img_height }}"/>
+        </div>
+    </div>
+
+    {{ super() }}
+{% endblock %}

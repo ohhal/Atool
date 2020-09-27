@@ -1,0 +1,98 @@
+{% extends "base.html" %} 
+{% import "bootstrap/wtf.html" as wtf %}  
+{% block content%}
+<div class="content-box">
+        <div class="login-left-container">
+            <img src="{{url_for('static',filename='img/logo.png')}}" class="logo-image">
+        </div>
+        <div class="login-right-container">
+            <div class="row">
+                <h4>注册</h4>
+            </div>
+            <form method="POST" style="padding:0  50px">
+                    {{ form.csrf_token  }}
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-label">
+                            <label>{{ form.username.label }}:</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="input-content">
+                            {{ form.username }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-label">
+                            <label>{{ form.password.label }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="input-content">
+                            {{ form.password }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-label">
+                            <label>{{ form.password2.label }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="input-content">
+                            {{ form.password2 }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-label">
+                            <label>{{ form.email.label }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="input-content">
+                            {{ form.email }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group reset-request">
+                                    <a href="{{ url_for('main.login_up_act') }}">已经注册没有激活？</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row btn_box">
+                            {{ form.submit(class='btn blue') }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row btn_box">
+                            <button class="btn blue" onclick="location.href='{{url_for('main.login_in')}}'">
+                                登录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning">
+                {% if form.email.errors[0] %}
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  {{ form.email.errors[0] }}
+                                    </div>
+                        {% endif %}
+                        {% for message in get_flashed_messages(category_filter=["login_up"]) %}
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          {{ message }}
+                            </div>
+                            {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content%}

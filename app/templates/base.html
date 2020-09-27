@@ -1,0 +1,72 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} ZAL 专注分享{% endblock title %}
+{%- block styles %}
+{{super()}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="{{url_for('static',filename='css/footer.css',_external=True)}}" rel="stylesheet">
+ <link href="{{url_for('static',filename='css/xscss.css')}}" rel="stylesheet">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    <meta charset="UTF-8"/>
+{%- endblock styles %}
+
+{% block navbar %}
+ <!-- 导航栏开始 -->
+ <nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <img src="{{url_for('static',filename='img/zlogo.png')}}" class="zlogo">
+            </a>
+        </div>
+    <div>
+        <ul class="nav navbar-nav">
+            {% if flag == 1 %}
+            <li class="active"><a href="/">首页</a></li>
+            {% else%}
+            <li><a href="/">首页</a></li>
+            {% endif %}
+            {% if flag == 2 %}
+            <li class="active"><a href="{{url_for('tools.tools_index')}}">在线工具</a></li>
+            {% else%}
+            <li><a href="{{url_for('tools.tools_index')}}">在线工具</a></li>
+            {% endif %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right"> 
+            {% if current_user.is_authenticated %}
+            <li><a>Hello,{{current_user.user_name}}</a></li> 
+            <li><a href="{{url_for('main.login_out')}}"><span class="glyphicon glyphicon-user"></span>登出</a></li> 
+            {% else %}
+          <li><a href="{{url_for('main.login_up')}}"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
+          <li><a href="{{ url_for('main.login_in')}}"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> 
+          {% endif %}
+      </ul> 
+    </div>
+    </div>
+</nav>
+<div class="wrap">
+    <div class="main">
+{% endblock navbar %}
+
+{% block content %}
+    </div>
+</div>
+<!-- 底部begin -->
+<div class ="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-offset-4 col-md-8">
+               <ul class="nav navbar-nav">
+                  <li class="active"><a href="#">关于我们</a></li>
+                  <li ><a href="#">联系我们</a></li>
+                  <li><a href="#">广告服务</a></li>
+                  <li><a href="#">免责声明</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- 底部end -->
+{% endblock %}
+
+

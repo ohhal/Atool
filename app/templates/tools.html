@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{super()}}
+<link href="{{url_for('static',filename='css/toolsdiv.css')}}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<script type="text/javascript">
+        function get_location() {
+            var tools_ocr = document.getElementById('tools_ocr');
+            tools_ocr.innerText = location.href + "ocr/";
+        }
+        window.onload = get_location;
+
+    </script>
+<div id="wrap">
+    <div id="bdy">
+        <div class="w">
+    <div class="main no-side" id="page">
+    <div class="inner">
+        <div class="item-list clearfix">
+            <div class="item tool-coderunner">
+            <div class="item-inner">
+                <div class="item-hd">
+                    <a target="_blank" href="https://tool.lu/coderunner/" class="item-icon"><img
+                                src="{{url_for('static',filename='img/run.png')}}"
+                                width="48" height="48" alt="coderunner"></a>
+                    <h3><a target="_blank" href="https://tool.lu/coderunner/">在线运行代码</a></h3>
+                </div>
+                <div class="item-bd">
+                    <div class="item-desc"
+                         title="在线运行php,c,c++,go,python,java,groovy代码">在线运行php,c,c++,go,python,java,groovy代码</div>
+                </div>
+                <div class="item-ft">
+                    <a target="_blank" class="item-link" href="https://tool.lu/coderunner/">https://tool.lu/coderunner/</a>
+                    <a target="_blank" class="item-btn" href="https://tool.lu/coderunner/">进入</a>
+                </div>
+
+            </div>
+        </div>
+
+            <div class="item tool-ocr">
+            <div class="item-inner">
+                <div class="item-hd">
+                    <a target="_blank" href="/tools/ocr/" class="item-icon"><img
+                                src="{{url_for('static',filename='img/ocr.png')}}"
+                                width="48" height="48" alt="tools_ocr"></a>
+                    <h3><a target="_blank" href="/tools/ocr/">ocr识别</a></h3>
+
+                                            </div>
+                <div class="item-bd">
+                    <div class="item-desc"
+                         title="常见英文数字验证码识别">常见英文数字验证码识别</div>
+                </div>
+                <div class="item-ft">
+                    <a target="_blank" class="item-link" id="tools_ocr" href="/tools/ocr/" ></a>
+                    <a target="_blank" class="item-btn" href="/tools/ocr/">进入</a>
+                </div>
+
+            </div>
+        </div>
+
+            <div class="item tool-spider">
+            <div class="item-inner">
+                <div class="item-hd">
+                    <a target="_blank" href="/tools/spider/" class="item-icon"><img
+                                src="{{url_for('static',filename='img/spider.png')}}"
+                                width="48" height="48" alt="tool-spider"></a>
+                    <h3><a target="_blank" href="/tools/spider/">在线接口测试</a></h3>
+
+                                            </div>
+                <div class="item-bd">
+                    <div class="item-desc"
+                         title="在线接口测试">在线接口测试</div>
+                </div>
+                <div class="item-ft">
+                    <a target="_blank" class="item-link" id="tool-spider" href="/tools/spider/" ></a>
+                    <a target="_blank" class="item-btn" href="/tools/spider/">进入</a>
+                </div>
+
+            </div>
+        </div>
+
+
+            </div>
+        </div>
+                </div>
+    </div>
+    </div>
+</div>
+    {{super()}}
+    {% endblock %}

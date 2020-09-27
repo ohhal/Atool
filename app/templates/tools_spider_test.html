@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <script>
+        function success(text) {
+            var textarea = document.getElementById('returntext');
+            var resstauts = document.getElementById('resstauts');
+            var code = text['code'];
+            if (code == 0) {
+                resstauts.innerText = '请求成功！';
+                textarea.value = text['msg'];
+            } else {
+                resstauts.value = text['msg'];
+            }
+
+
+        }
+
+        function fail(code) {
+            var resstauts = document.getElementById('resstauts');
+            resstauts.value = '请求过程出错' + code;
+        }
+
+
+        function posturl() {
+            var spiderurl = $("#spiderurl").val(); //url
+            var spidermethod = $("#requestmethod").val(); //请求方法
+            var requestformat = $("#requestformat").val(); //请求字体样式
+            var header = {};//请求头
+            var aa = document.getElementsByName("headerkey"); //headervalue
+            var bb = document.getElementsByName("headervalue");
+            for (var i = 0; i < aa.length; i++) {
+                var key = aa[i].value;
+                var kval = bb[i].value;
+                header[key] = kval;
+            }
+            header['Content-Type'] = $("#selectheaders").val();
+            alert(JSON.stringify(header));
+            var params = {};
+            var params_aa = document.getElementsByName("paramskey"); //paramskey
+            var params_bb = document.getElementsByName("paramsvalue");
+            for (var param_i = 0; param_i < params_aa.length; param_i++) {
+                var key = params_aa[param_i].value;
+                var kval = params_bb[param_i].value;
+                params[key] = kval;
+            }
+            alert(JSON.stringify(params));
+            var cookie = document.getElementById("cookieinput");
+            var proxy = document.getElementById("proxyinput")
+            var obj = {
+                "url": spiderurl,
+                "method": spidermethod,
+                "requestformat": requestformat,
+                "params": JSON.stringify(params),
+                "headers": JSON.stringify(header),
+                "cookies": cookie,
+                "proxy": proxy,
+            }
+
+            var request = new XMLHttpRequest(); // 新建XMLHttpRequest对象
+
+            request.onreadystatechange = function () { // 状态发生变化时，函数被回调
+                if (request.readyState === 4) { // 成功完成
+                    // 判断响应结果:
+                    if (request.status === 200) {
+                        // 成功，通过responseText拿到响应的文本:
+                        return success(JSON.parse(request.responseText));
+                    } else {
+                        // 失败，根据响应码判断失败原因:
+                        return fail(request.status);
+                    }
+                } else {
+                    // HTTP请求还在继续...
+                }
+            }
+            // 发送请求:
+            request.open("post", '/api/spider', true);
+            request.send(JSON.stringify(obj));//发送请求
+
+        }
+
+        function chg_proxy(f, e) {
+            if (document.getElementById(e).style.display == "none") {
+                $(f).css("background-color", "#4cae4c");
+                document.getElementById(e).style.display = "";//显示
+            } else {
+                $(f).css("background-color", "#5bc0de");
+                document.getElementById(e).style.display = "none";//隐藏
+            }
+        }
+
+        function add_param_div() {
+            var l = document.getElementsByClassName("param").length
+            if (l <= 30) {
+                var a = document.getElementsByClassName("param")[0];
+
+                var div = document.createElement("div");
+                div.className = "param";
+                div.style = "line-height: 55px;"
+                div.innerHTML = a.innerHTML;
+                document.getElementById("paramsfrom").appendChild(div);
+            } else {
+                alert('最多30行')
+            }
+        }
+
+        function add_header_div() {
+            var l = document.getElementsByClassName("header").length
+            if (l <= 30) {
+                var a = document.getElementsByClassName("header")[0];
+
+                var div = document.createElement("div");
+                div.className = "header";
+                div.style = "line-height: 55px;"
+                div.innerHTML = a.innerHTML;
+                document.getElementById("headerfrom").appendChild(div);
+            } else {
+                alert('最多30行')
+            }
+        }
+
+        function del_div(e) {
+            if ($(e).parent().parent().parent().children().length <= 1) {
+                alert('再删就没了');
+            } else {
+                $(e).parent().parent().remove();
+            }
+        }
+
+        // 修改弹出框的title, 显示弹框
+        function ShowCreateModal(title) {
+            $("#addstitle").text(title);
+            $('#batchparameters').modal('show');
+        }
+
+        // 关闭弹框， 获取输入值，然后执行逻辑
+        function closemodel() {
+            $("#batchparameters").modal("hide");
+            var inputFileName = $("#paramName").val();
+            alert(inputFileName);
+            {#console.log("input file name : " + inputFileName);#}
+        }
+
+        // 修改弹出框的title, 显示弹框
+        function ShowModal(title) {
+            $("#addheadertitle").text(title);
+            $('#batchheaders').modal('show');
+        }
+
+        // 关闭弹框header， 获取输入值，然后执行逻辑
+        function closemodel2() {
+            $("#batchheaders").modal("hide");
+            var inputFileName = $("#headersName").val();
+            {#alert(inputFileName);#}
+            {#var obj = JSON.parse(JSON.stringify(inputFileName));#}
+            for (var key in inputFileName) {
+                var item = inputFileName[key];
+                console.log(key, item); //AA,BB,CC,DD
+            }
+            {#console.log(obj);         //控制台返回  Object#}
+            {#console.log(obj.user_id);     //控制台返回  value#}
+            {#console.log(obj.jian);    //控制台返回  zhi#}
+        }
+
+
+    </script>
+    <style>
+        .content-box {
+            width: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            z-index: 2;
+            border: 1px solid #5cd8ff;
+            margin: 2% auto;
+            border-radius: 15px;
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            background: #e9faff;
+        }
+
+    </style>
+    <div class="content-box">
+        <div class="tool-left-container">
+            <div class="row">
+                <h4>在线接口测试</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <input id="spiderurl" name="spiderurl" placeholder="输入url地址，如：https://www.google.com/"
+                               type="text" value="">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <button type="button" class="btn btn-success" onclick="posturl()">模拟请求</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <select class="requestmethod-select" id="requestmethod"
+                            style="padding: 5px 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="requestformat-select" id="requestformat"
+                            style="padding: 5px 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="UTF-8">UTF-8</option>
+                        <option value="GBK">GBK</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnparams" onclick="chg_proxy(this,'paramsrow')">参数
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnheader" onclick="chg_proxy(this,'headerrow')">
+                        header
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btncookie" onclick="chg_proxy(this,'cookierow')">
+                        cookie
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnproxy" onclick="chg_proxy(this,'proxyrow')">代理设置
+                    </button>
+                </div>
+
+            </div>
+            {#参数#}
+            <div class="row" id="paramsrow" style="display:none;">
+                <div class="row" id="paramsfrom">
+                    <div class="param" style="line-height: 55px;">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-content">
+                                <input name="paramskey" class="form-control-paramskey" placeholder="参数 key"
+                                       type="text" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="input-content">
+                                <input name="paramsvalue" class="form-control-paramsvalue" placeholder="输入参数value,可空"
+                                       type="text" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="del_div(this)">删除</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-info" id="addparam" onclick="add_param_div()">添加一行</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-info" id="addsparams"
+                                onclick="ShowCreateModal('批量添加参数，支持JSON 和 GET 参数格式')">批量添加
+                        </button>
+                    </div>
+                    <div class="col-md-7">
+                    </div>
+                </div>
+
+            </div>
+            {#header#}
+            <div class="row" id="headerrow" style="display:none;">
+                <div class="row">
+                    <div class="header-type" style="line-height: 55px;">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-content">
+                                <input class="form-control-headerkey" name="headerkey" placeholder=""
+                                       type="text" value="Content-Type">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <select class="headervalue-select" id="selectheaders" name="headervalue"
+                                    style="-webkit-appearance: none;background-color: #fff;background-image: none;border-radius: 4px;border: 1px solid #dcdfe6;
+                                            -webkit-box-sizing: border-box;
+                                            box-sizing: border-box;
+                                            color: #606266;
+                                            display: inline-block;
+                                            font-size: inherit;
+                                            height: 40px;
+                                            line-height: 40px;
+                                            outline: none;
+                                            padding: 0 15px;
+                                            -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+                                            transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+                                            width: 100%;">
+                                <option value="application/json">application/json</option>
+                                <option value="application/xml">application/xml</option>
+                                <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="headerfrom">
+                    <div class="header" style="line-height: 55px;">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-content">
+                                <input class="form-control-headerkey" name="headerkey" placeholder="header name"
+                                       type="text" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="input-content">
+                                <input class="form-control-headervalue" name="headervalue" placeholder="输入header value"
+                                       type="text" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" id="deleheader" onclick="del_div(this)">删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-info" id="addheader" onclick="add_header_div()">添加一行
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-info" id="addsheader"
+                                onclick="ShowModal('批量添加Header，支持JSON')">批量添加
+                        </button>
+                    </div>
+                    <div class="col-md-7">
+                    </div>
+                </div>
+
+            </div>
+            {#cookie#}
+            <div class="row" id="cookierow" style="display:none;">
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <label>cookie:</label>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <input id="cookieinput" name="cookieinput" placeholder="输入cookie"
+                               type="text" value="">
+                    </div>
+                </div>
+
+            </div>
+            {#代理#}
+            <div class="row" id="proxyrow" style="display:none;">
+                <div class="col-md-2">
+                    <div class="input-content">
+                        <label>代理地址:</label>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="input-content">
+                        <input id="proxyinput" name="proxyinput" placeholder="输入代理地址，如：https://127.0.0.1:10808"
+                               type="text" value="">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tool-right-container">
+            <div class="row">
+                <h4 id="resstauts"></h4>
+            </div>
+            <div class="row">
+                <textarea class="form-control" rows="30" style="margin: 30px auto;width: 90%;"
+                          id="returntext"></textarea>
+            </div>
+        </div>
+        <div class="modal fade" id="batchparameters" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addstitle">批量添加</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea autofocus class="form-control" id="paramName"
+                                          placeholder="参数添加，如：{'name':'sojson','domain':'www.sojson.com'} 或者：name=sojson&domain=www.sojson.com"
+                                          rows="5"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="paramSureBut" onclick="closemodel()">确定
+                        </button>
+                        <button type="button" class="btn btn-warning" id="paramCancel"
+                                onclick=$("#batchparameters").modal("hide")>取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="batchheaders" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addheadertitle">批量添加</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea autofocus class="form-control" id="headersName"
+                                          placeholder="添加headers，如：{'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36', 'content-type': 'application/x-www-form-urlencoded', }"
+                                          rows="5"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="headerSureBut" onclick="closemodel2()">确定
+                        </button>
+                        <button type="button" class="btn btn-warning" id="headerCancel"
+                                onclick=$("#batchheaders").modal("hide")>取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    {{ super() }}
+{% endblock %}

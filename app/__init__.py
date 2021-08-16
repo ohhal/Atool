@@ -28,8 +28,8 @@ def create_app(config_name):
         MAIL_PORT=25,
         MAIL_USE_TLS=True,
         MAIL_USE_SSL=False,
-        MAIL_USERNAME='944782440@qq.com',
-        MAIL_PASSWORD='lnxejxiefuosbcgb',
+        MAIL_USERNAME='', # todo 用于验证邮箱的邮箱账号
+        MAIL_PASSWORD='', # todo 用于验证邮箱的邮箱密码
     ))
 
     mail.init_app(app)

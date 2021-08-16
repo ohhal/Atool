@@ -81,7 +81,7 @@ def yzm(upload_path):
     with open(upload_path, "rb") as f:  # 二进制打开图片
         img_bin = f.read()
         res = {"image": list(img_bin)}
-        r = requests.post('http://116.62.14.45:8888/', json=res)
+        r = requests.post('http://116.62.14.45:8888/', json=res) # 打码服务
         r_text = json.loads(r.text)
         r_text = r_text['code']
         ret = r_text
